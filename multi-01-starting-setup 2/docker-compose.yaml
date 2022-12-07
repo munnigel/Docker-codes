@@ -1,0 +1,41 @@
+# Don't need to add a network, because the default network is created automatically
+# when we use docker-compose
+version: '3.8'
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - 'data:/data/db'
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=munnigel
+    #   - MONGO_INITDB_ROOT_PASSWORD=password
+    env_file:
+      - ./env/mongo.env
+
+  backend:
+  # since there is no image, we need the build command which is same as 'docker build'
+    build: ./backend
+    ports:
+      - '80:80'
+    volumes:
+      - 'logs:/app/logs'  # <--- named volume
+      - './backend:/app'  # <--- bind mount
+      - '/app/node_modules' # <--- anonymous volume
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb # <--- shows that backend depends on mongodb
+
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - './frontend/src:/app/src'
+
+# all named volumes have to be listed here, in this case, data.
+volumes:
+  data:
+  logs:
+
