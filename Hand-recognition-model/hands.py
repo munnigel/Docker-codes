@@ -48,7 +48,7 @@ def main():
       if len(lmList) != 0:
           print(lmList[4])
 
-      cv2.imshow("Video",image)
+      cv2.imshow("Video",cv2.flip(image,1))
       cv2.waitKey(1)
 
 if __name__ == "__main__":

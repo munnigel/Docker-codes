@@ -1,24 +1,19 @@
-import cv2
-import mediapipe as mp
+import screen_brightness_control as sbc
 
-cap = cv2.VideoCapture(0)
-mpHands = mp.solutions.hands
-hands = mpHands.Hands()
-mpDraw = mp.solutions.drawing_utils
+# get the brightness
+brightness = sbc.get_brightness()
+# get the brightness for the primary monitor
+primary = sbc.get_brightness(display=0)
 
-while True:
-  success, img = cap.read()
-  imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-  results = hands.process(imgRGB)
-  if results.multi_hand_landmarks:
-    for handLms in results.multi_hand_landmarks:
-      for id, lm in enumerate(handLms.landmark):
-        h, w, c = img.shape
-        cx, cy = int(lm.x * w), int(lm.y * h)
-        print(id, cx, cy)
-        if id == 20:
-          cv2.circle(img, (cx, cy), 25, (255, 0, 255), cv2.FILLED)
-      mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
+# set the brightness to 100%
+sbc.set_brightness(100)
+# set the brightness to 100% for the primary monitor
+sbc.get_brightness(100, display=0)
 
-  cv2.imshow("Image", img)
-  cv2.waitKey(1)
+# show the current brightness for each detected monitor
+for monitor in sbc.list_monitors():
+    print(monitor, ':', sbc.get_brightness(display=monitor), '%')
+
+
+# https://www.geeksforgeeks.org/how-to-control-laptop-screen-brightness-using-python/
+# https://morioh.com/p/2e255e407f4a
