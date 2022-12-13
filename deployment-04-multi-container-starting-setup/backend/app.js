@@ -77,7 +77,7 @@ app.delete('/goals/:id', async (req, res) => {
 
 const connectDbAndStartServer = () => {
   mongoose.connect(
-    `mongodb://${process.env.MONGODB_URL}:27017/course-goals?authSource=admin`,
+    `mongodb+srv://nigel:S6EYxjRaSMtxBQXq@${process.env.MONGODB_URL}/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

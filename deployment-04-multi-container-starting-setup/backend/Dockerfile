@@ -11,5 +11,6 @@ COPY . .
 EXPOSE 80
 
 ENV MONGODB_URL=mongodb
+ENV MONGODB_NAME=goals-dev
 
 CMD ["npm", "start"]
